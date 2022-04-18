@@ -28,7 +28,7 @@ const completionSpec: Fig.Spec = {
             },
             {
               name: "demo",
-              description: "Run Gloo mesh Enterprise on remote demo clusters",
+              description: "Run Gloo Mesh Enterprise on remote demo clusters",
             },
           ],
         },
