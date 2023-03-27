@@ -23,8 +23,8 @@ const completionSpec: Fig.Spec = {
           description: "Run Gloo Mesh Enterprise on remote clusters",
           subcommands: [
             {
-              name: "dev",
-              description: "Run Gloo Mesh Enterprise on remote dev clusters",
+              name: "test",
+              description: "Run Gloo Mesh Enterprise on remote test clusters",
             },
             {
               name: "demo",
