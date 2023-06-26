@@ -1,4 +1,191 @@
-const completionSpec: Fig.Spec = {
+export const stdCSuggestions: Fig.Suggestion[] = [
+  {
+    name: ["c89", "c90", "iso9899:1990"],
+    description: "ISO C 1990",
+  },
+  {
+    name: "iso9899:199409",
+    description: "ISO C 1990 with amendment 1",
+  },
+  {
+    name: ["gnu89", "gnu90"],
+    description: "ISO C 1990 with GNU extensions",
+  },
+  {
+    name: ["c99", "iso9899:1999"],
+    description: "ISO C 1999",
+  },
+  {
+    name: "gnu99",
+    description: "ISO C 1999 with GNU extensions",
+  },
+  {
+    name: ["c11", "iso9899:2011"],
+    description: "ISO C 2011",
+  },
+  {
+    name: "gnu11",
+    description: "ISO C 2011 with GNU extensions",
+  },
+  {
+    name: ["c17", "iso9899:2017", "c18", "iso9899:2018"],
+    description: "ISO C 2017",
+  },
+  {
+    name: ["gnu17", "gnu18"],
+    description: "ISO C 2017 with GNU extensions",
+  },
+  {
+    name: "c2x",
+    description: "Working Draft for ISO C2x",
+  },
+  {
+    name: "gnu2x",
+    description: "Working Draft for ISO C2x with GNU extensions",
+  },
+];
+
+export const stdCPPSuggestions: Fig.Suggestion[] = [
+  {
+    name: ["c++98", "c++03"],
+    description: "ISO C++ 1998 with amendments",
+  },
+  {
+    name: ["gnu++98", "gnu++03"],
+    description: "ISO C++ 1998 with amendments and GNU extensions",
+  },
+  {
+    name: "c++11",
+    description: "ISO C++ 2011 with amendments",
+  },
+  {
+    name: "gnu++11",
+    description: "ISO C++ 2011 with amendments and GNU extensions",
+  },
+  {
+    name: "c++14",
+    description: "ISO C++ 2014 with amendments",
+  },
+  {
+    name: "gnu++14",
+    description: "ISO C++ 2014 with amendments and GNU extensions",
+  },
+  {
+    name: "c++17",
+    description: "ISO C++ 2017 with amendments",
+  },
+  {
+    name: "gnu++17",
+    description: "ISO C++ 2017 with amendments and GNU extensions",
+  },
+  {
+    name: "c++20",
+    description: "ISO C++ 2020 DIS",
+  },
+  {
+    name: "gnu++20",
+    description: "ISO C++ 2020 DIS with GNU extensions",
+  },
+  {
+    name: "c++2b",
+    description: "Working draft for ISO C++ 2023 DIS",
+  },
+  {
+    name: "gnu++2b",
+    description: "Working draft for ISO C++ 2023 DIS with GNU extensions",
+  },
+];
+
+export const stdOpenCLSuggestions: Fig.Suggestion[] = [
+  {
+    name: "cl1.0",
+    description: "OpenCL 1.0",
+  },
+  {
+    name: "cl1.1",
+    description: "OpenCL 1.1",
+  },
+  {
+    name: "cl1.2",
+    description: "OpenCL 1.2",
+  },
+  {
+    name: "cl2.0",
+    description: "OpenCL 2.0",
+  },
+  {
+    name: "cl3.0",
+    description: "OpenCL 3.0",
+  },
+];
+
+export const stdOpenCLCPPSuggestions: Fig.Suggestion[] = [
+  {
+    name: ["clc++", "clc++1.0"],
+    description: "C++ for OpenCL 1.0",
+  },
+  {
+    name: "clc++2021",
+    description: "C++ for OpenCL 2021",
+  },
+];
+
+export const stdHLSLSuggestions: Fig.Suggestion[] = [
+  {
+    name: "hlsl",
+    description: "High Level Shader Language",
+  },
+  {
+    name: "hlsl2015",
+    description: "High Level Shader Language 2015",
+  },
+  {
+    name: "hlsl2016",
+    description: "High Level Shader Language 2016",
+  },
+  {
+    name: "hlsl2017",
+    description: "High Level Shader Language 2017",
+  },
+  {
+    name: "hlsl2018",
+    description: "High Level Shader Language 2018",
+  },
+  {
+    name: "hlsl2021",
+    description: "High Level Shader Language 2021",
+  },
+  {
+    name: "hlsl202x",
+    description: "High Level Shader Language 202x",
+  },
+];
+
+export const stdOption: Fig.Option = {
+  name: "-std",
+  description: "Language standard to compile for",
+  args: {
+    name: "value",
+    suggestions: [
+      ...stdCSuggestions,
+      ...stdCPPSuggestions,
+      ...stdOpenCLSuggestions,
+      ...stdOpenCLCPPSuggestions,
+      {
+        name: "cuda",
+        description: "NVIDIA CUDA(tm)",
+      },
+      {
+        name: "hip",
+        description: "HIP",
+      },
+      ...stdHLSLSuggestions,
+    ],
+  },
+  requiresSeparator: true,
+};
+
+export const clangBase: Fig.Spec = {
   name: "clang",
   description: "Clang LLVM compiler",
   args: {
@@ -107,7 +294,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-cl-strict-aliasing",
@@ -152,7 +339,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "--cuda-noopt-device-debug",
@@ -169,7 +356,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-cxx-isystem",
@@ -298,7 +485,7 @@ const completionSpec: Fig.Spec = {
         name: "directory",
         template: "folders",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fapinotes-modules",
@@ -310,7 +497,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "version",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fapinotes",
@@ -345,7 +532,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fblocks",
@@ -368,7 +555,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "file",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fbuild-session-timestamp",
@@ -376,7 +563,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "timesinceEpochinseconds",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fbuiltin-module-map",
@@ -433,7 +620,7 @@ const completionSpec: Fig.Spec = {
         suggestions: ["return", "branch", "full", "none"],
         default: "full",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fchar8_t",
@@ -445,7 +632,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "version",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fcolor-diagnostics",
@@ -458,7 +645,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "arg",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fcommon",
@@ -493,7 +680,7 @@ const completionSpec: Fig.Spec = {
         template: "folders",
         isOptional: true,
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fcuda-approx-transcendentals",
@@ -531,7 +718,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fdebug-info-for-profiling",
@@ -547,7 +734,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fdebug-ranges-base-address",
@@ -582,7 +769,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fdiagnostics-parseable-fixits",
@@ -651,7 +838,7 @@ const completionSpec: Fig.Spec = {
         suggestions: ["off", "all", "bitcode", "marker"],
         isOptional: true,
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-femit-all-decls",
@@ -696,7 +883,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-ffine-grained-bitfield-accesses",
@@ -865,7 +1052,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-ffp-exception-behavior",
@@ -874,7 +1061,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-ffp-model",
@@ -882,7 +1069,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-ffreestanding",
@@ -921,7 +1108,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fgpu-allow-device-init",
@@ -996,7 +1183,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-flegacy-pass-manager",
@@ -1009,7 +1196,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-flto",
@@ -1020,7 +1207,7 @@ const completionSpec: Fig.Spec = {
         isOptional: true,
         default: "full",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fmacro-prefix-map",
@@ -1028,7 +1215,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fmath-errno",
@@ -1040,7 +1227,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fmax-type-align",
@@ -1049,7 +1236,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fmemory-profile",
@@ -1059,7 +1246,7 @@ const completionSpec: Fig.Spec = {
         name: "directory",
         isOptional: true,
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fmerge-all-constants",
@@ -1072,13 +1259,13 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fmodule-file",
       description:
         "[<name>=]<file> Specify the mapping of module name to precompiled module file, or load a module file if name is omitted",
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fmodule-map-file",
@@ -1086,7 +1273,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "file",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fmodule-name",
@@ -1094,7 +1281,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "name",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fmodules-cache-path",
@@ -1103,7 +1290,7 @@ const completionSpec: Fig.Spec = {
         name: "directory",
         template: "folders",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fmodules-decluse",
@@ -1121,7 +1308,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fmodules-prune-after",
@@ -1130,7 +1317,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "seconds",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fmodules-prune-interval",
@@ -1139,7 +1326,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "seconds",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fmodules-search-all",
@@ -1187,7 +1374,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fms-compatibility",
@@ -1205,7 +1392,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fnew-alignment",
@@ -1214,7 +1401,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "align",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fno-aapcs-bitfield-width",
@@ -1671,7 +1858,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fno-sanitize-memory-track-origins",
@@ -1690,7 +1877,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fno-sanitize-stats",
@@ -1717,7 +1904,7 @@ const completionSpec: Fig.Spec = {
         name: "value",
         isOptional: true,
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fno-semantic-interposition",
@@ -1921,7 +2108,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fobjc-weak",
@@ -1938,7 +2125,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fopenmp",
@@ -1951,7 +2138,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "file",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-foptimization-record-passes",
@@ -1960,7 +2147,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "regex",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-forder-file-instrumentation",
@@ -1973,7 +2160,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fpascal-strings",
@@ -1986,7 +2173,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "dsopath",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fpatchable-function-entry",
@@ -1995,7 +2182,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "N,M",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fpcc-struct-return",
@@ -2029,7 +2216,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "dsopath",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fprebuilt-implicit-modules",
@@ -2042,7 +2229,7 @@ const completionSpec: Fig.Spec = {
         name: "directory",
         template: "folders",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fpreserve-as-comments",
@@ -2053,7 +2240,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fproc-stat-reportvalue",
@@ -2072,7 +2259,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fprofile-filter-files",
@@ -2081,7 +2268,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fprofile-generate",
@@ -2091,7 +2278,7 @@ const completionSpec: Fig.Spec = {
         name: "directory",
         isOptional: true,
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fprofile-instr-generate",
@@ -2102,7 +2289,7 @@ const completionSpec: Fig.Spec = {
         isOptional: true,
         template: "filepaths",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fprofile-instr-use",
@@ -2110,7 +2297,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fprofile-remapping-file",
@@ -2119,7 +2306,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "file",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fprofile-sample-accurate",
@@ -2131,7 +2318,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fprofile-update",
@@ -2140,7 +2327,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "method",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fprofile-use",
@@ -2149,7 +2336,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "pathname",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fpseudo-probe-for-profiling",
@@ -2161,7 +2348,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fptrauth-auth-traps",
@@ -2203,7 +2390,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fptrauth-objc-isa",
@@ -2278,7 +2465,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fsanitize-address-globals-dead-stripping",
@@ -2305,7 +2492,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fsanitize-cfi-canonical-jump-tables",
@@ -2329,7 +2516,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fsanitize-coverage-blacklist",
@@ -2337,7 +2524,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fsanitize-coverage-blocklist",
@@ -2346,7 +2533,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fsanitize-coverage-whitelist",
@@ -2354,7 +2541,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fsanitize-coverage",
@@ -2363,7 +2550,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fsanitize-hwaddress-abi",
@@ -2372,7 +2559,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fsanitize-memory-track-origins",
@@ -2381,7 +2568,7 @@ const completionSpec: Fig.Spec = {
         name: "value",
         isOptional: true,
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fsanitize-memory-use-after-dtor",
@@ -2396,7 +2583,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fsanitize-stats",
@@ -2408,7 +2595,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fsanitize-thread-atomics",
@@ -2431,7 +2618,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fsanitize-undefined-strip-path-components",
@@ -2440,7 +2627,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "number",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fsanitize",
@@ -2449,7 +2636,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "check",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fsave-optimization-record",
@@ -2459,7 +2646,7 @@ const completionSpec: Fig.Spec = {
         default: "YAML",
         isOptional: true,
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fseh-exceptions",
@@ -2487,7 +2674,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fsigned-char",
@@ -2601,7 +2788,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fthinlto-index",
@@ -2610,7 +2797,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fthreadsafe-statics",
@@ -2622,7 +2809,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-ftime-trace-granularity",
@@ -2631,7 +2818,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-ftime-trace",
@@ -2645,7 +2832,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-ftrapv-handler",
@@ -2653,7 +2840,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "functionname",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-ftrapv",
@@ -2670,7 +2857,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-ftrivial-auto-var-init",
@@ -2679,7 +2866,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-funique-basic-block-section-names",
@@ -2718,7 +2905,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fvectorize",
@@ -2740,7 +2927,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fvisibility-externs-dllimport",
@@ -2749,7 +2936,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fvisibility-externs-nodllstorageclass",
@@ -2758,7 +2945,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fvisibility-from-dllstorageclass",
@@ -2792,7 +2979,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fvisibility",
@@ -2801,7 +2988,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fwasm-exceptions",
@@ -2836,7 +3023,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fxray-attr-list",
@@ -2845,7 +3032,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fxray-function-groups",
@@ -2853,7 +3040,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fxray-function-index",
@@ -2869,7 +3056,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fxray-instrumentation-bundle",
@@ -2878,7 +3065,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fxray-instrument",
@@ -2896,7 +3083,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fxray-never-instrument",
@@ -2905,7 +3092,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fxray-selected-function-group",
@@ -2914,7 +3101,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-fzero-initialized-in-bss",
@@ -2936,7 +3123,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-gcodeview-ghash",
@@ -3016,7 +3203,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "--gpu-max-threads-per-block",
@@ -3025,7 +3212,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-gsplit-dwarf",
@@ -3033,7 +3220,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-gz",
@@ -3041,7 +3228,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-G",
@@ -3069,7 +3256,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "--hip-link",
@@ -3081,7 +3268,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-H",
@@ -3270,7 +3457,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-L",
@@ -3296,7 +3483,7 @@ const completionSpec: Fig.Spec = {
           },
         ],
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-mabicalls",
@@ -3312,7 +3499,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-malign-branch",
@@ -3320,7 +3507,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-malign-double",
@@ -3336,7 +3523,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-mbranches-within-32B-boundaries",
@@ -3348,7 +3535,7 @@ const completionSpec: Fig.Spec = {
       args: {
         suggestions: ["small", "medium", "medany", "medlow"],
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-mcmse",
@@ -3366,7 +3553,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "version",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-mcrc",
@@ -3383,7 +3570,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-MD",
@@ -3417,7 +3604,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-mexecute-only",
@@ -3477,7 +3664,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-mhvx-length",
@@ -3485,7 +3672,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-mhvx",
@@ -3494,7 +3681,7 @@ const completionSpec: Fig.Spec = {
         name: "value",
         isOptional: true,
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-miamcu",
@@ -3520,7 +3707,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-mios-version-min",
@@ -3528,7 +3715,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-MJ",
@@ -3582,7 +3769,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-mmadd4",
@@ -3836,7 +4023,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-mpie-copy-relocations",
@@ -3849,7 +4036,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-MP",
@@ -3904,7 +4091,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-msmall-data-limit",
@@ -3913,7 +4100,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-msoft-float",
@@ -3928,7 +4115,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-mstack-arg-probe",
@@ -3940,7 +4127,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-mstack-protector-guard-offset",
@@ -3949,7 +4136,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-mstack-protector-guard-reg",
@@ -3957,7 +4144,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-mstack-protector-guard",
@@ -3966,7 +4153,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-mstackrealign",
@@ -3979,7 +4166,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-msvr4-struct-return",
@@ -4005,7 +4192,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-mtp",
@@ -4013,7 +4200,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-mtune",
@@ -4022,7 +4209,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-MT",
@@ -4061,7 +4248,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "--no-cuda-version-check",
@@ -4075,7 +4262,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-no-pthread",
@@ -4087,7 +4274,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "prefix",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-nobuiltininc",
@@ -4183,7 +4370,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-ObjC",
@@ -4196,7 +4383,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-o",
@@ -4227,7 +4414,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "file",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-print-ivar-layout",
@@ -4244,7 +4431,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "name",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-print-resource-dir",
@@ -4277,7 +4464,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-P",
@@ -4313,7 +4500,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "--rocm-path",
@@ -4322,7 +4509,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-Rpass-analysis",
@@ -4331,7 +4518,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-Rpass-missed",
@@ -4340,7 +4527,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-Rpass",
@@ -4349,7 +4536,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-rtlib",
@@ -4357,7 +4544,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-Rremark",
@@ -4373,7 +4560,7 @@ const completionSpec: Fig.Spec = {
         name: "value",
         isOptional: true,
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-save-temps",
@@ -4382,7 +4569,7 @@ const completionSpec: Fig.Spec = {
         name: "value",
         isOptional: true,
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-serialize-diagnostics",
@@ -4404,14 +4591,6 @@ const completionSpec: Fig.Spec = {
       description: "Use the static host OpenMP runtime while linking",
     },
     {
-      name: "-std",
-      description: "Language standard to compile for",
-      args: {
-        name: "value",
-      },
-      requiresEquals: true,
-    },
-    {
       name: "-stdlib++-isystem",
       description: "Use directory as the C++ standard library include path",
       args: {
@@ -4425,7 +4604,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-sycl-std",
@@ -4433,7 +4612,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "--system-header-prefix",
@@ -4442,7 +4621,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "prefix",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-S",
@@ -4462,7 +4641,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-Tbss",
@@ -4514,7 +4693,7 @@ const completionSpec: Fig.Spec = {
       args: {
         name: "value",
       },
-      requiresEquals: true,
+      requiresSeparator: true,
     },
     {
       name: "-U",
@@ -4541,11 +4720,11 @@ const completionSpec: Fig.Spec = {
       description: "Show commands to run and use verbose output",
     },
     {
-      name: "-Wa,arg",
+      name: "-Wa",
       description:
         "Pass the comma separated arguments in <arg> to the assembler",
       args: {
-        name: "",
+        name: "arg",
       },
     },
     {
@@ -4554,10 +4733,10 @@ const completionSpec: Fig.Spec = {
         "Enable warnings for deprecated constructs and define __DEPRECATED",
     },
     {
-      name: "-Wl,arg",
+      name: "-Wl",
       description: "Pass the comma separated arguments in <arg> to the linker",
       args: {
-        name: "",
+        name: "arg",
       },
     },
     {
@@ -4568,11 +4747,11 @@ const completionSpec: Fig.Spec = {
       },
     },
     {
-      name: "-Wp,arg",
+      name: "-Wp",
       description:
         "Pass the comma separated arguments in <arg> to the preprocessor",
       args: {
-        name: "",
+        name: "arg",
       },
     },
     {
@@ -4680,4 +4859,8 @@ const completionSpec: Fig.Spec = {
   ],
 };
 
+const completionSpec: Fig.Spec = {
+  ...clangBase,
+  options: [...clangBase.options, stdOption],
+};
 export default completionSpec;

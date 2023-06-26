@@ -17,11 +17,15 @@ const suggestions: Fig.Suggestion[] = [
   },
   {
     name: "tailwindcss",
-    icon: "https://tailwindcss.com/favicon-32x32.png",
+    icon: "https://tailwindcss.com/favicons/favicon-32x32.png",
   },
   {
     name: "next",
     icon: "https://nextjs.org/static/favicon/favicon-16x16.png",
+  },
+  {
+    name: "nuxi",
+    icon: "https://raw.githubusercontent.com/nuxt/framework/main/docs/public/icon.png",
   },
   {
     name: "gltfjsx",
@@ -33,7 +37,7 @@ const suggestions: Fig.Suggestion[] = [
   },
   {
     name: "eslint",
-    icon: "https://eslint.org/assets/img/favicon.512x512.png",
+    icon: "https://raw.githubusercontent.com/eslint/eslint.org/main/src/static/icon-512.png",
   },
   {
     name: "prettier",
@@ -56,12 +60,24 @@ const suggestions: Fig.Suggestion[] = [
     icon: "https://fig.io/icons/fig-light.png",
   },
   {
+    name: "create-completion-spec",
+    icon: "https://fig.io/icons/fig-light.png",
+  },
+  {
+    name: "@fig/publish-spec-to-team",
+    icon: "https://fig.io/icons/fig-light.png",
+  },
+  {
     name: "fig-teams@latest",
     icon: "https://fig.io/icons/fig-light.png",
   },
   {
     name: "create-next-app",
     icon: "https://nextjs.org/static/favicon/favicon-16x16.png",
+  },
+  {
+    name: "create-t3-app",
+    icon: "https://create.t3.gg/favicon.svg",
   },
   {
     name: "create-video",
@@ -80,6 +96,10 @@ const suggestions: Fig.Suggestion[] = [
     icon: "https://remix.run/favicon-light.1.png",
   },
   {
+    name: "playwright",
+    icon: "https://playwright.dev/img/playwright-logo.svg",
+  },
+  {
     name: "ignite-cli",
     icon: "🔥",
   },
@@ -94,12 +114,50 @@ const suggestions: Fig.Suggestion[] = [
     name: "@preset/cli",
     icon: "https://raw.githubusercontent.com/preset/preset/main/.github/assets/logo.svg",
   },
+  {
+    name: "mikro-orm",
+    icon: "https://raw.githubusercontent.com/mikro-orm/mikro-orm/master/docs/static/img/favicon.ico",
+  },
+  {
+    name: "pod-install",
+  },
+  {
+    name: "capacitor",
+    icon: "https://capacitorjs.com/docs/img/meta/favicon.png",
+  },
+  {
+    name: "cap",
+    icon: "https://capacitorjs.com/docs/img/meta/favicon.png",
+  },
+  {
+    name: "@magnolia/cli",
+    icon: "https://avatars.githubusercontent.com/u/25686615?s=200&v=4",
+  },
+  {
+    name: "stencil",
+    icon: "https://stenciljs.com/assets/icon/favicon.ico",
+  },
+  {
+    name: "swagger-typescript-api",
+    icon: "https://static1.smartbear.co/swagger/media/assets/swagger_fav.png",
+  },
+  {
+    name: "sta",
+    icon: "https://static1.smartbear.co/swagger/media/assets/swagger_fav.png",
+  },
+  {
+    name: "@wordpress/create-block",
+    icon: "https://s1.wp.com/i/webclip.png",
+  },
+  {
+    name: "astro",
+    icon: "https://astro.build/favicon.svg",
+  },
 ];
 
 const completionSpec: Fig.Spec = {
   name: "npx",
   description: "Execute binaries from npm packages",
-
   args: {
     name: "command",
     isCommand: true,

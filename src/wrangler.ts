@@ -43,7 +43,7 @@ const completionSpec: Fig.Spec = {
           name: "template",
           isOptional: true,
           description: `A link to a GitHub template! Defaults to 
-            https://github.com/cloudflare/worker-template`,
+https://github.com/cloudflare/worker-template`,
         },
       ],
       options: [
@@ -58,7 +58,7 @@ const completionSpec: Fig.Spec = {
             isOptional: true,
           },
           description: `Initializes a Workers Sites project. Overrides 'type' 
-            and 'template'`,
+and 'template'`,
         },
         {
           name: ["-t", "--type"],
@@ -173,7 +173,6 @@ const completionSpec: Fig.Spec = {
           description: "Upload multiple key-value pairs to a namespace",
           args: {
             name: "keys",
-
             template: "filepaths",
           },
         },
@@ -242,7 +241,7 @@ const completionSpec: Fig.Spec = {
         {
           name: ["-s", "--site"],
           description: `Initializes a Workers Sites project. Overrides 'type' 
-            and 'template'`,
+and 'template'`,
         },
         {
           name: ["-t", "--type"],
@@ -270,7 +269,7 @@ const completionSpec: Fig.Spec = {
           isOptional: true,
           suggestions: ["get", "post"],
           description: `Type of request to preview your worker with (get, post) 
-            [default: get]`,
+[default: get]`,
         },
         {
           name: "body",
@@ -290,12 +289,12 @@ const completionSpec: Fig.Spec = {
         {
           name: "--watch",
           description: `Watch your project for changes and update the preview 
-            automagically`,
+automagically`,
         },
         {
           name: ["-u", "--url"],
           description: `URL to open in the worker preview 
-            [default: https://example.com]`,
+[default: https://example.com]`,
         },
       ],
     },
@@ -312,7 +311,7 @@ const completionSpec: Fig.Spec = {
             name: "hostname",
           },
           description: `Host to forward requests to, defaults to the zone of 
-            project or to tutorial.cloudflareworkers.com if unauthenticated`,
+project or to tutorial.cloudflareworkers.com if unauthenticated`,
         },
         {
           name: ["-i", "--ip"],

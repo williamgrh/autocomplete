@@ -180,7 +180,6 @@ const completionSpec: Fig.Spec = {
       description:
         "Do not bypass geographic restriction via faking X-Forwarded-For HTTP header",
     },
-
     {
       name: "--geo-bypass-country",
       description:
@@ -1042,7 +1041,7 @@ const completionSpec: Fig.Spec = {
         "Embed subtitles in the video (only for mp4, webm and mkv videos)",
     },
     {
-      name: "--embed-thumbnails",
+      name: "--embed-thumbnail",
       description: "Embed thumbnail in the audio as cover art",
     },
     {

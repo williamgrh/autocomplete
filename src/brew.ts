@@ -12,6 +12,13 @@ const servicesGenerator = (action: string): Fig.Generator => ({
   },
 });
 
+const repositoriesGenerator = (): Fig.Generator => ({
+  script: "brew tap",
+  postProcess: (out) => {
+    return out.split("\n").map((line) => ({ name: line }));
+  },
+});
+
 const formulaeGenerator: Fig.Generator = {
   script: "brew list -1",
   postProcess: function (out) {
@@ -37,6 +44,43 @@ const outdatedformulaeGenerator: Fig.Generator = {
   },
 };
 
+const generateAllFormulae: Fig.Generator = {
+  script: "brew formulae",
+  postProcess: function (out) {
+    return out.split("\n").map((formula) => ({
+      name: formula,
+      icon: "🍺",
+      description: "Formula",
+      priority: 51,
+    }));
+  },
+};
+
+const generateAllCasks: Fig.Generator = {
+  script: "brew casks",
+  postProcess: function (out) {
+    return out.split("\n").map((cask) => ({
+      name: cask,
+      icon: "🍺",
+      description: "Cask",
+      priority: 52,
+    }));
+  },
+};
+const generateAliases: Fig.Generator = {
+  script: 'find ~/.brew-aliases/ -type f ! -name "*.*" -d 1 | sed "s/.*\\///"',
+  postProcess: function (out) {
+    return out
+      .split("\n")
+      .filter((line) => line && line.trim() !== "")
+      .map((line) => ({
+        name: line,
+        icon: "fig://icon?type=command",
+        description: `Execute alias ${line}`,
+      }));
+  },
+};
+
 const commonOptions: Fig.Option[] = [
   {
     name: ["-d", "--debug"],
@@ -50,120 +94,8 @@ const commonOptions: Fig.Option[] = [
     name: ["-v", "--verbose"],
     description: "Make some output more verbose",
   },
-  { name: ["-h", "--help"], description: "Show this message" },
+  { name: ["-h", "--help"], description: "Show help message" },
 ];
-
-// brew info is equiv to brew abv. Everything but 'name' is shared.
-const brewInfo = (name: string): Fig.Subcommand => ({
-  name,
-  description: "Display brief statistics for your Homebrew installation",
-  args: {
-    isVariadic: true,
-    isOptional: true,
-    name: "formula",
-    description: "Formula or cask to summarize",
-    generators: {
-      script:
-        "HBPATH=$(brew --repository); ls -1 $HBPATH/Library/Taps/homebrew/homebrew-core/Formula $HBPATH/Library/Taps/homebrew/homebrew-cask/Casks",
-      postProcess: (out) =>
-        [...new Set(out.split("\n"))].map((formula) => ({
-          name: formula.replace(".rb", ""),
-          description: "Formula",
-          icon: "🍺",
-          priority:
-            (formula[0] >= "0" && formula[0] <= "9") || formula[0] == "/"
-              ? 0
-              : 51,
-        })),
-    },
-  },
-  options: [
-    {
-      name: "--analytics",
-      description:
-        "List global Homebrew analytics data or, if specified, installation and build error data for formula",
-    },
-    {
-      name: "--days",
-      description: "How many days of analytics data to retrieve",
-      exclusiveOn: ["--analytics"],
-      args: {
-        name: "days",
-        description: "Number of days of data to retrieve",
-        suggestions: ["30", "90", "365"],
-      },
-    },
-    {
-      name: "--category",
-      description: "Which type of analytics data to retrieve",
-      exclusiveOn: ["--analytics"],
-      args: {
-        generators: {
-          custom: async (ctx) => {
-            // if anything provided after the subcommand does not begin with '-'
-            // then a formula has been provided and we should provide info on it
-            if (
-              ctx.slice(2, ctx.length - 1).some((token) => token[0] !== "-")
-            ) {
-              return ["install", "install-on-request", "build-error"].map(
-                (sugg) => ({
-                  name: sugg,
-                })
-              );
-            }
-
-            // if no formulas are specified, then we should provide system info
-            return ["cask-install", "os-version"].map((sugg) => ({
-              name: sugg,
-            }));
-          },
-        },
-      },
-    },
-    {
-      name: "--github",
-      description: "Open the GitHub source page for formula in a browser",
-    },
-    {
-      name: "--json",
-      description: "Print a JSON representation",
-    },
-    {
-      name: "--installed",
-      exclusiveOn: ["--json"],
-      description: "Print JSON of formulae that are currently installed",
-    },
-    {
-      name: "--all",
-      exclusiveOn: ["--json"],
-      description: "Print JSON of all available formulae",
-    },
-    {
-      name: ["-v", "--verbose"],
-      description: "Show more verbose analytics data for formulae",
-    },
-    {
-      name: "--formula",
-      description: "Treat all named arguments as formulae",
-    },
-    {
-      name: "--cash",
-      description: "Treat all named arguments as casks",
-    },
-    {
-      name: ["-d", "--debug"],
-      description: "Display any debugging information",
-    },
-    {
-      name: ["-q", "--quiet"],
-      description: "List only the names of outdated kegs",
-    },
-    {
-      name: ["-h", "--help"],
-      description: "Get help with services command",
-    },
-  ],
-});
 
 const completionSpec: Fig.Spec = {
   name: "brew",
@@ -246,7 +178,7 @@ const completionSpec: Fig.Spec = {
       options: [
         ...commonOptions,
         {
-          name: "--formula,",
+          name: "--formula",
           description:
             "List only formulae, or treat all named arguments as formulae",
         },
@@ -341,8 +273,107 @@ const completionSpec: Fig.Spec = {
         },
       ],
     },
-    brewInfo("info"),
-    brewInfo("abv"),
+    {
+      name: ["abv", "info"],
+      description: "Display brief statistics for your Homebrew installation",
+      args: {
+        isVariadic: true,
+        isOptional: true,
+        name: "formula",
+        description: "Formula or cask to summarize",
+        generators: [generateAllFormulae, generateAllCasks],
+      },
+      options: [
+        {
+          name: ["--cask", "--casks"],
+          description: "List only casks, or treat all named arguments as casks",
+        },
+        {
+          name: "--analytics",
+          description:
+            "List global Homebrew analytics data or, if specified, installation and build error data for formula",
+        },
+        {
+          name: "--days",
+          description: "How many days of analytics data to retrieve",
+          exclusiveOn: ["--analytics"],
+          args: {
+            name: "days",
+            description: "Number of days of data to retrieve",
+            suggestions: ["30", "90", "365"],
+          },
+        },
+        {
+          name: "--category",
+          description: "Which type of analytics data to retrieve",
+          exclusiveOn: ["--analytics"],
+          args: {
+            generators: {
+              custom: async (ctx) => {
+                // if anything provided after the subcommand does not begin with '-'
+                // then a formula has been provided and we should provide info on it
+                if (
+                  ctx.slice(2, ctx.length - 1).some((token) => token[0] !== "-")
+                ) {
+                  return ["install", "install-on-request", "build-error"].map(
+                    (sugg) => ({
+                      name: sugg,
+                    })
+                  );
+                }
+
+                // if no formulas are specified, then we should provide system info
+                return ["cask-install", "os-version"].map((sugg) => ({
+                  name: sugg,
+                }));
+              },
+            },
+          },
+        },
+        {
+          name: "--github",
+          description: "Open the GitHub source page for formula in a browser",
+        },
+        {
+          name: "--json",
+          description: "Print a JSON representation",
+        },
+        {
+          name: "--installed",
+          exclusiveOn: ["--json"],
+          description: "Print JSON of formulae that are currently installed",
+        },
+        {
+          name: "--all",
+          exclusiveOn: ["--json"],
+          description: "Print JSON of all available formulae",
+        },
+        {
+          name: ["-v", "--verbose"],
+          description: "Show more verbose analytics data for formulae",
+        },
+        {
+          name: "--formula",
+          description: "Treat all named arguments as formulae",
+        },
+        {
+          name: "--cash",
+          description: "Treat all named arguments as casks",
+        },
+        {
+          name: ["-d", "--debug"],
+          description: "Display any debugging information",
+        },
+        {
+          name: ["-q", "--quiet"],
+          description: "List only the names of outdated kegs",
+        },
+        {
+          name: ["-h", "--help"],
+          description: "Get help with services command",
+        },
+      ],
+    },
     {
       name: "update",
       description: "Fetch the newest version of Homebrew and all formulae",
@@ -747,7 +778,7 @@ const completionSpec: Fig.Spec = {
       options: [
         ...commonOptions,
         {
-          name: "--formula,",
+          name: "--formula",
           description: "Search online and locally for formulae",
         },
         {
@@ -805,7 +836,6 @@ const completionSpec: Fig.Spec = {
           name: ["-v", "--verbose"],
           description: "Make some output more verbose",
         },
-
         {
           name: ["-q", "--quiet"],
           description: "Make some output more quiet",
@@ -847,7 +877,7 @@ const completionSpec: Fig.Spec = {
         },
         { name: ["-h", "--help"], description: "Show this message" },
         {
-          name: "--formula,",
+          name: "--formula",
           description: "Treat all named arguments as formulae",
         },
         {
@@ -873,7 +903,6 @@ const completionSpec: Fig.Spec = {
             suggestions: ["gcc-7", "llvm_clang", "clang"],
           },
         },
-
         {
           name: "--force-bottle",
           description:
@@ -1080,24 +1109,7 @@ const completionSpec: Fig.Spec = {
         isVariadic: true,
         name: "formula",
         description: "Formula or cask to install",
-
-        generators: {
-          script:
-            "HBPATH=$(brew --repository); ls -1 $HBPATH/Library/Taps/homebrew/homebrew-core/Formula $HBPATH/Library/Taps/homebrew/homebrew-cask/Casks",
-          postProcess: function (out) {
-            return out.split("\n").map((formula) => {
-              return {
-                name: formula.replace(".rb", ""),
-                description: "Formula",
-                icon: "🍺",
-                priority:
-                  (formula[0] >= "0" && formula[0] <= "9") || formula[0] == "/"
-                    ? 0
-                    : 51,
-              };
-            });
-          },
-        },
+        generators: [generateAllFormulae, generateAllCasks],
       },
     },
     {
@@ -1130,7 +1142,7 @@ const completionSpec: Fig.Spec = {
         },
         { name: ["-g", "--git"], description: "Create a Git repository" },
         {
-          name: "--formula,",
+          name: "--formula",
           description: "Treat all named arguments as formulae",
         },
         {
@@ -1191,13 +1203,35 @@ const completionSpec: Fig.Spec = {
       },
     },
     {
-      name: "uninstall",
-      description: "Uninstall <formula>",
+      name: ["uninstall", "remove", "rm"],
+      description: "Uninstall a formula or cask",
       args: {
         isVariadic: true,
         name: "formula",
         generators: formulaeGenerator,
       },
+    },
+    {
+      // NOTE: this is actually a command even if it has the double dash in the front
+      name: "--prefix",
+      description: "Prefix of <formula>",
+      args: {
+        isVariadic: true,
+        name: "formula",
+        generators: formulaeGenerator,
+      },
+      options: [
+        {
+          name: "--unbrewed",
+          description:
+            "List files in Homebrew's prefix not installed by Homebrew",
+        },
+        {
+          name: "--installed",
+          description:
+            "Outputs nothing and returns a failing status code if formula is not installed",
+        },
+      ],
     },
     {
       name: "cask",
@@ -1206,7 +1240,6 @@ const completionSpec: Fig.Spec = {
       subcommands: [
         {
           name: "install",
-
           description: "Installs the given cask",
           args: {
             name: "cask",
@@ -1229,7 +1262,7 @@ const completionSpec: Fig.Spec = {
                 "Don't fail uninstall, even if formula is a dependency of any installed formulae",
             },
             {
-              name: "--formula,",
+              name: "--formula",
               description: "Treat all named arguments as formulae",
             },
             {
@@ -1315,12 +1348,10 @@ const completionSpec: Fig.Spec = {
       subcommands: [
         {
           name: "cleanup",
-
           description: "Remove all unused services",
         },
         {
           name: "list",
-
           description: "List all services",
         },
         {
@@ -1355,7 +1386,6 @@ const completionSpec: Fig.Spec = {
         },
         {
           name: "stop",
-
           description:
             "Stop the service formula immediately and unregister it from launching at",
           options: [
@@ -1371,7 +1401,6 @@ const completionSpec: Fig.Spec = {
         },
         {
           name: "restart",
-
           description:
             "Stop (if necessary) and start the service formula immediately and register it to launch at login (or boot)",
           options: [
@@ -1450,6 +1479,37 @@ const completionSpec: Fig.Spec = {
       },
     },
     {
+      name: "untap",
+      description: "Remove a tapped formula repository",
+      args: {
+        name: "repository",
+        generators: repositoriesGenerator(),
+      },
+      options: [
+        {
+          name: ["-f", "--force"],
+          description:
+            "Untap even if formulae or casks from this tap are currently installed",
+        },
+        {
+          name: ["-d", "--debug"],
+          description: "Display any debugging information",
+        },
+        {
+          name: ["-q", "--quiet"],
+          description: "Make some output more quiet",
+        },
+        {
+          name: ["-v", "--verbose"],
+          description: "Make some output more verbose",
+        },
+        {
+          name: ["-h", "--help"],
+          description: "Show help message",
+        },
+      ],
+    },
+    {
       name: "link",
       description:
         "Symlink all of formula's installed files into Homebrew's prefix",
@@ -1499,6 +1559,14 @@ const completionSpec: Fig.Spec = {
       ],
     },
     {
+      name: "formulae",
+      description: "List all available formulae",
+    },
+    {
+      name: "casks",
+      description: "List all available casks",
+    },
+    {
       name: "edit",
       description: "",
       args: {
@@ -1506,23 +1574,7 @@ const completionSpec: Fig.Spec = {
         isOptional: true,
         name: "formula",
         description: "Formula or cask to install",
-        generators: {
-          script:
-            "HBPATH=$(brew --repository); ls -1 $HBPATH/Library/Taps/homebrew/homebrew-core/Formula $HBPATH/Library/Taps/homebrew/homebrew-cask/Casks",
-          postProcess: function (out) {
-            return out.split("\n").map((formula) => {
-              return {
-                name: formula.replace(".rb", ""),
-                description: "Formula",
-                icon: "🍺",
-                priority:
-                  (formula[0] >= "0" && formula[0] <= "9") || formula[0] == "/"
-                    ? 0
-                    : 51,
-              };
-            });
-          },
-        },
+        generators: [generateAllFormulae, generateAllCasks],
       },
       options: [
         ...commonOptions,
@@ -1536,6 +1588,71 @@ const completionSpec: Fig.Spec = {
         },
       ],
     },
+    {
+      name: ["home", "homepage"],
+      description:
+        "Open a formula, cask's homepage in a browser, or open Homebrew's own homepage if no argument is provided",
+      args: {
+        isVariadic: true,
+        isOptional: true,
+        name: "formula",
+        description: "Formula or cask to open homepage for",
+        generators: [generateAllFormulae, generateAllCasks],
+      },
+      options: [
+        ...commonOptions,
+        {
+          name: ["--formula", "--formulae"],
+          description: "Treat all named arguments as formulae",
+        },
+        {
+          name: ["--cask", "--casks"],
+          description: "Treat all named arguments as casks",
+        },
+      ],
+    },
+    {
+      name: "alias",
+      description: "Manage custom user created brew aliases",
+      options: [
+        {
+          name: "--edit",
+          description: "Edit aliases in a text editor",
+        },
+        {
+          name: ["-d", "--debug"],
+          description: "Display any debugging information",
+        },
+        {
+          name: ["-q", "--quiet"],
+          description: "Make some output more quiet",
+        },
+        {
+          name: ["-v", "--verbose"],
+          description: "Make some output more verbose",
+        },
+        {
+          name: ["-h", "--help"],
+          description: "Show help message",
+        },
+      ],
+      args: {
+        name: "alias",
+        generators: generateAliases,
+        description: "Display the alias command",
+        isOptional: true,
+      },
+    },
+    {
+      name: "developer",
+      description: "Display the current state of Homebrew's developer mode",
+      args: {
+        name: "state",
+        description: "Turn Homebrew's developer mode on or off respectively",
+        suggestions: ["on", "off"],
+        isOptional: true,
+      },
+    },
   ],
   options: [
     {
@@ -1543,6 +1660,12 @@ const completionSpec: Fig.Spec = {
       description: "The current Homebrew version",
     },
   ],
+  args: {
+    name: "alias",
+    generators: generateAliases,
+    description: "Custom user defined brew alias",
+    isOptional: true,
+  },
 };
 
 export default completionSpec;
